@@ -8,6 +8,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Components\Component;
+use Illuminate\Validation\Rule;
 
 class TahunAkademikForm
 {
@@ -21,30 +23,37 @@ class TahunAkademikForm
                             ->label('Tahun Akademik')
                             ->placeholder('Contoh: 2025/2026')
                             ->required()
+                            ->rules(function (Component $component) {
+                                $recordId = $component->getLivewire()->record->id ?? null;
+                                return [
+                                    'required',
+                                    Rule::unique('tahun_akademik', 'nama')->ignore($recordId),
+                                ];
+                            })
                             ->validationMessages([
                                 'required' => 'Kolom Tahun Akademik wajib diisi.',
-                            ]),
-
-                        DatePicker::make('mulai')
-                            ->label('Tanggal Mulai')
-                            ->native(false)
-                            ->displayFormat('d/m/Y')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Tanggal mulai wajib diisi.',
-                            ]),
-
-                        DatePicker::make('selesai')
-                            ->label('Tanggal Selesai')
-                            ->native(false)
-                            ->displayFormat('d/m/Y')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Tanggal selesai wajib diisi.',
+                                'unique' => 'Tahun Akademik ini sudah ada.',
                             ]),
 
                         Toggle::make('aktif')
-                            ->label('Tahun Aktif'),
+                            ->label('Tahun Aktif')
+                            ->default(false)
+                            ->rule(function ($record) {
+                                return function ($attribute, $value, $fail) use ($record) {
+                                    if ($value) {
+                                        $query = \App\Models\TahunAkademik::where('aktif', true);
+
+                                        if ($record) {
+                                            $query->where('id', '!=', $record->id);
+                                        }
+
+                                        if ($query->exists()) {
+                                            $fail('Hanya boleh ada satu tahun akademik yang aktif.');
+                                        }
+                                    }
+                                };
+                            }),
+
                     ])
 
             ]);
