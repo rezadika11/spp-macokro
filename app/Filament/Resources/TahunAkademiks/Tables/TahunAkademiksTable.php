@@ -19,6 +19,12 @@ class TahunAkademiksTable
             ->columns([
                 TextColumn::make('nama')
                     ->label('Tahun Akademik'),
+                TextColumn::make('mulai')
+                    ->label('Mulai')
+                    ->date('d/m/Y'),
+                TextColumn::make('selesai')
+                    ->label('Selesai')
+                    ->date('d/m/Y'),
                 ToggleColumn::make('aktif')
                     ->label('Aktif')
                     ->onIcon('heroicon-s-check-circle')

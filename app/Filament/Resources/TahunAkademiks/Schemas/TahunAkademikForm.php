@@ -35,6 +35,18 @@ class TahunAkademikForm
                                 'unique' => 'Tahun Akademik ini sudah ada.',
                             ]),
 
+                        DatePicker::make('mulai')
+                            ->label('Mulai')
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->required(),
+
+                        DatePicker::make('selesai')
+                            ->label('Selesai')
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->required(),
+
                         Toggle::make('aktif')
                             ->label('Tahun Aktif')
                             ->default(false)

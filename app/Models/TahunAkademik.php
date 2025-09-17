@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TahunAkademik extends Model
 {
     protected $table = 'tahun_akademik';
-    protected $fillable = ['nama', 'aktif'];
+    protected $fillable = ['nama', 'mulai', 'selesai', 'aktif'];
 
     public function pembayaran()
     {

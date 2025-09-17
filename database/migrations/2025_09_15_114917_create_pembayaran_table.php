@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('siswa')->cascadeOnDelete();
+            $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
             $table->foreignId('tahun_akademik_id')
                 ->constrained('tahun_akademik')
-                ->cascadeOnDelete();
+                ->onDelete('cascade');
             $table->string('bulan');
             $table->integer('jumlah');
-            $table->enum('status', ['belum_bayar', 'lunas', 'terlambat'])->default('belum_bayar');
+            $table->enum('status', ['belum_bayar', 'lunas'])->default('belum_bayar');
             $table->date('tanggal_bayar')->nullable();
             $table->string('nomor_kuitansi')->nullable();
             $table->timestamps();
