@@ -91,9 +91,38 @@ class PembayaransTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('kirim_tagihan')
+                    ->label('Kirim Tagihan')
+                    ->icon(Heroicon::OutlinedPaperAirplane)
+                    ->color('warning')
+                    ->url(function ($record) {
+                        $namaSiswa = $record->siswa->nama;
+                        $bulan = $record->bulan;
+                        $jumlah = number_format($record->jumlah, 0, ',', '.');
+                        $pesan = "Assalamualaikum Wr. Wb.\n\nYth. Bapak/Ibu Wali dari ananda {$namaSiswa}, kami ingin memberitahukan bahwa ada tagihan SPP untuk bulan {$bulan} sebesar Rp {$jumlah} yang perlu dibayarkan.\n\nTerima kasih.\nBendahara MA Cokroaminoto Karangkobar.";
+                        return 'https://wa.me/' . $record->siswa->no_hp . '?text=' . urlencode($pesan);
+                    })
+                    ->openUrlInNewTab()
+                    ->visible(fn($record) => $record->status === 'belum_bayar' && $record->siswa->no_hp),
+
+                Action::make('kirim_notifikasi_lunas')
+                    ->label('Kirim Notif Lunas')
+                    ->icon(Heroicon::OutlinedCheckCircle)
+                    ->color('info')
+                    ->url(function ($record) {
+                        $namaSiswa = $record->siswa->nama;
+                        $bulan = $record->bulan;
+                        $jumlah = number_format($record->jumlah, 0, ',', '.');
+                        $tanggalBayar = $record->tanggal_bayar->format('d-m-Y');
+                        $pesan = "Alhamdulillah.\n\nYth. Bapak/Ibu Wali dari ananda {$namaSiswa}, kami memberitahukan bahwa pembayaran SPP untuk bulan {$bulan} sebesar Rp {$jumlah} telah kami terima pada tanggal {$tanggalBayar}.\n\nTerima kasih atas pembayaran tepat waktu Anda.\nBendahara MA Cokroaminoto Karangkobar.";
+                        return 'https://wa.me/' . $record->siswa->no_hp . '?text=' . urlencode($pesan);
+                    })
+                    ->openUrlInNewTab()
+                    ->visible(fn($record) => $record->status === 'lunas' && $record->siswa->no_hp),
+
                 Action::make('cetak_kuitansi')
                     ->label('Cetak Kuitansi')
-                    ->icon(Heroicon::OutlinedAcademicCap)
+                    ->icon(Heroicon::OutlinedPrinter)
                     ->color('success')
                     ->url(fn($record) => route('kuitansi.cetak', $record->id))
                     ->openUrlInNewTab()
