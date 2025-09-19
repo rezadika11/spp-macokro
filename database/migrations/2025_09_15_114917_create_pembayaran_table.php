@@ -18,7 +18,7 @@ return new class extends Migration
                 ->constrained('tahun_akademik')
                 ->onDelete('cascade');
             $table->string('bulan')->nullable();
-            $table->integer('jumlah')->nullable();
+            $table->integer('jumlah')->nullable()->default(125000);
             $table->enum('status', ['belum_bayar', 'lunas'])->default('belum_bayar');
             $table->date('tanggal_bayar')->nullable();
             $table->string('nomor_kuitansi')->nullable();

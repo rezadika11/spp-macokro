@@ -36,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Emerald,
             ])
+            // ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('18rem')
             ->maxContentWidth(Width::Full)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -43,7 +44,6 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->sidebarCollapsibleOnDesktop()
             // ->widgets([
             //     // Widgets\AccountWidget::class,
             //     // Widgets\FilamentInfoWidget::class,

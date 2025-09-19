@@ -10,10 +10,8 @@ class EditPembayaran extends EditRecord
 {
     protected static string $resource = PembayaranResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getRedirectUrl(): string
     {
-        return [
-            DeleteAction::make(),
-        ];
+        return static::getResource()::getUrl('index');
     }
 }

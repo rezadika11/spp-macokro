@@ -31,7 +31,9 @@ class Siswa extends Model
                     Pembayaran::create([
                         'siswa_id' => $siswa->id,
                         'tahun_akademik_id' => $tahunAkademik->id,
-                        'bulan' => $start->toDateString(),
+                        'bulan' => $start->translatedFormat('F'), // Format nama bulan dalam bahasa Indonesia
+                        'jumlah' => 125000, // Jumlah SPP tetap 125rb
+                        'status' => 'belum_bayar',
                     ]);
 
                     $start->addMonth();

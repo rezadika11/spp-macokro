@@ -22,6 +22,7 @@ class PembayaranForm
                             ->label('Siswa')
                             ->relationship('siswa', 'nama')
                             ->searchable()
+                            ->disabled()
                             ->preload()
                             ->required(),
 
@@ -29,11 +30,13 @@ class PembayaranForm
                             ->label('Tahun Akademik')
                             ->relationship('tahunAkademik', 'nama')
                             ->searchable()
+                            ->disabled()
                             ->preload()
                             ->required(),
 
                         Select::make('bulan')
                             ->label('Bulan')
+                            ->disabled()
                             ->options([
                                 'Januari' => 'Januari',
                                 'Februari' => 'Februari',
@@ -54,6 +57,7 @@ class PembayaranForm
                             ->label('Jumlah Pembayaran')
                             ->required()
                             ->numeric()
+                            ->disabled()
                             ->prefix('Rp')
                             ->placeholder('100000'),
 
@@ -62,22 +66,16 @@ class PembayaranForm
                             ->options([
                                 'belum_bayar' => 'Belum Bayar',
                                 'lunas' => 'Lunas',
-                                'terlambat' => 'Terlambat'
                             ])
                             ->default('belum_bayar')
                             ->required(),
 
                         DatePicker::make('tanggal_bayar')
                             ->label('Tanggal Bayar')
+                            ->placeholder('Pilih Tanggal Bayar')
+                            ->required()
                             ->native(false)
                             ->displayFormat('d/m/Y'),
-
-                        TextInput::make('nomor_kuitansi')
-                            ->label('Nomor Kuitansi')
-                            ->placeholder('Otomatis: KWT-202501XXXX')
-                            ->disabled()
-                            ->dehydrated(false)
-                            ->helperText('Nomor kuitansi akan dibuat otomatis saat pembayaran disimpan'),
                     ])
                     ->columns(2) // form di dalam card dibagi 2 kolom
                     ->columnSpanFull(), // card/section tetap span 12 (full width)
