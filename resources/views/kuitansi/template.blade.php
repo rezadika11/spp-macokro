@@ -7,16 +7,16 @@
     <title>Kuitansi Pembayaran SPP</title>
     <style>
         @page {
-            size: A4 landscape;
-            margin: 15mm;
+            size: A5 landscape;
+            margin: 10mm;
         }
 
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 11px;
-            line-height: 1.4;
+            font-size: 9px;
+            line-height: 1.3;
         }
 
         .container {
@@ -33,19 +33,19 @@
 
         .header h1 {
             margin: 0;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .header h2 {
-            margin: 3px 0;
             font-size: 14px;
             font-weight: bold;
         }
 
+        .header h2 {
+            margin: 2px 0;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
         .header p {
             margin: 1px 0;
-            font-size: 10px;
+            font-size: 8px;
         }
 
         .kuitansi-info {
@@ -87,12 +87,14 @@
         .footer {
             margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
+            width: 100%;
         }
 
         .signature {
             text-align: center;
             width: 180px;
+            margin-left: auto;
         }
 
         .signature-line {
@@ -207,24 +209,20 @@
         </table>
 
         <div class="footer">
-            {{-- <div class="signature">
-                <div>Siswa/Wali Murid</div>
-                <div class="signature-line">{{ $pembayaran->siswa->nama }}</div>
-            </div> --}}
             <div class="signature">
                 <div>Petugas Keuangan</div>
                 <div class="signature-line">(.............................)</div>
             </div>
         </div>
 
-        <div class="notes">
+        {{-- <div class="notes">
             <p><strong>Catatan:</strong></p>
             <ul>
                 <li>Kuitansi ini adalah bukti sah pembayaran SPP</li>
                 <li>Harap simpan kuitansi ini dengan baik</li>
                 <li>Untuk informasi lebih lanjut hubungi bagian keuangan sekolah</li>
             </ul>
-        </div>
+        </div> --}}
     </div>
 </body>
 

@@ -35,5 +35,9 @@ return [
         ],
     ],
 
+    'fontte' => [
+        'url' => env('FONTTE_API_URL', 'https://api.fonnte.com'),
+        'token' => env('FONTTE_TOKEN'),
+    ],
 
 ];
