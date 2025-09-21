@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('logo.webp') }}" type="image/x-icon">
     <title>Kuitansi Pembayaran SPP</title>
     <style>
         @page {
@@ -231,7 +232,7 @@
         <div class="footer">
             <div class="signature">
                 <div>Petugas Keuangan</div>
-                <div class="signature-line">(....................................)</div>
+                <div class="signature-line">{{ ucwords($petugas) }}</div>
             </div>
         </div>
 
