@@ -39,13 +39,57 @@ class TahunAkademikForm
                             ->label('Mulai')
                             ->native(false)
                             ->displayFormat('d/m/Y')
-                            ->required(),
+                            ->required()
+                            ->rules([
+                                'required',
+                                'date',
+                            ])
+                            ->validationMessages([
+                                'required' => 'Tanggal mulai wajib diisi.',
+                                'date' => 'Format tanggal tidak valid.',
+                            ]),
 
                         DatePicker::make('selesai')
                             ->label('Selesai')
                             ->native(false)
                             ->displayFormat('d/m/Y')
-                            ->required(),
+                            ->required()
+                            ->rules(function (Component $component) {
+                                return [
+                                    'required',
+                                    'date',
+                                    'after:mulai',
+                                    function ($attribute, $value, $fail) use ($component) {
+                                        $recordId = $component->getLivewire()->record->id ?? null;
+                                        $mulai = $component->getLivewire()->data['mulai'] ?? null;
+                                        
+                                        if ($mulai && $value) {
+                                            // Check for overlapping periods
+                                            $query = \App\Models\TahunAkademik::where(function ($q) use ($mulai, $value) {
+                                                $q->whereBetween('mulai', [$mulai, $value])
+                                                  ->orWhereBetween('selesai', [$mulai, $value])
+                                                  ->orWhere(function ($q2) use ($mulai, $value) {
+                                                      $q2->where('mulai', '<=', $mulai)
+                                                         ->where('selesai', '>=', $value);
+                                                  });
+                                            });
+                                            
+                                            if ($recordId) {
+                                                $query->where('id', '!=', $recordId);
+                                            }
+                                            
+                                            if ($query->exists()) {
+                                                $fail('Periode tahun akademik ini bertabrakan dengan tahun akademik yang sudah ada.');
+                                            }
+                                        }
+                                    }
+                                ];
+                            })
+                            ->validationMessages([
+                                'required' => 'Tanggal selesai wajib diisi.',
+                                'date' => 'Format tanggal tidak valid.',
+                                'after' => 'Tanggal selesai harus setelah tanggal mulai.',
+                            ]),
 
                         Toggle::make('aktif')
                             ->label('Tahun Aktif')

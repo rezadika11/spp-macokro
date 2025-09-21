@@ -21,6 +21,10 @@ class TahunAkademikResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
     protected static ?string $navigationLabel = 'Tahun Akademik';
 
+    protected static ?string $modelLabel = 'Tahun Akademik';
+
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return TahunAkademikForm::configure($schema);

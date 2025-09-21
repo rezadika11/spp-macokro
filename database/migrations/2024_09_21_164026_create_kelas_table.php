@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswa', function (Blueprint $table) {
+        Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->string('nis')->unique();
-            $table->string('nama');
-            $table->foreignId('kelas_id')->nullable()->constrained('kelas')->onDelete('set null');
-            $table->string('no_hp')->nullable();
-            $table->text('alamat')->nullable();
+            $table->string('nama')->unique(); // Contoh: X IPA 1, XI IPS 2, XII Bahasa
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswa');
+        Schema::dropIfExists('kelas');
     }
 };

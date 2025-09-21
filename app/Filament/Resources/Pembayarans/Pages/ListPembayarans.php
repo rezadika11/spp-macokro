@@ -43,7 +43,7 @@ class ListPembayarans extends ListRecords
                             ->send();
                     }
                 }),
-            CreateAction::make(),
+            // CreateAction::make(),
         ];
     }
 }

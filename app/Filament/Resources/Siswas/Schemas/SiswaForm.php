@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Siswas\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -37,9 +38,11 @@ class SiswaForm
                             ->label('Nama')
                             ->placeholder('Nama Siswa')
                             ->required(),
-                        TextInput::make('kelas')
+                        Select::make('kelas_id')
                             ->label('Kelas')
-                            ->placeholder('Kelas Siswa')
+                            ->relationship('kelas', 'nama')
+                            ->searchable()
+                            ->preload()
                             ->required(),
                         TextInput::make('no_hp')
                             ->label('No WA')

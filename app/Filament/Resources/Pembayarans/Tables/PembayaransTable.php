@@ -117,7 +117,7 @@ class PembayaransTable
                         $bulan = $record->bulan;
                         $jumlah = number_format($record->jumlah, 0, ',', '.');
                         $tanggalBayar = $record->tanggal_bayar ? \Carbon\Carbon::parse($record->tanggal_bayar)->format('d-m-Y') : date('d-m-Y');
-                        $pesan = "Alhamdulillah.\n\nYth. Bapak/Ibu Wali dari ananda {$namaSiswa}, kami memberitahukan bahwa pembayaran SPP untuk bulan {$bulan} sebesar Rp {$jumlah} telah kami terima pada tanggal {$tanggalBayar}.\n\nTerima kasih atas pembayaran tepat waktu Anda.\nBendahara MA Cokroaminoto Karangkobar.";
+                        $pesan = "Assalamualaikum Wr. Wb.\n\nYth. Bapak/Ibu Wali dari ananda {$namaSiswa}, kami memberitahukan bahwa pembayaran SPP untuk bulan {$bulan} sebesar Rp {$jumlah} telah kami terima pada tanggal {$tanggalBayar}.\n\nTerima kasih atas pembayaran tepat waktu Anda.\nBendahara MA Cokroaminoto Karangkobar.";
                         return 'https://wa.me/' . $record->siswa->no_hp . '?text=' . urlencode($pesan);
                     })
                     ->openUrlInNewTab()
