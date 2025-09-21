@@ -32,8 +32,11 @@ class KuitansiController extends Controller
         
         // Generate terbilang untuk jumlah pembayaran
         $terbilang = $this->terbilang($pembayaran->jumlah);
+        
+        // Path logo untuk PDF
+        $logoPath = public_path('logo.webp');
 
-        $pdf = Pdf::loadView('kuitansi.template', compact('pembayaran', 'tanggal_cetak', 'terbilang'))->setPaper('a5', 'landscape');
+        $pdf = Pdf::loadView('kuitansi.template', compact('pembayaran', 'tanggal_cetak', 'terbilang', 'logoPath'))->setPaper('a5', 'landscape');
 
         // Kirim WhatsApp otomatis jika pembayaran baru lunas dan ada nomor HP
         if ($pembayaran->wasChanged('status') && $pembayaran->status === 'lunas' && $pembayaran->siswa->no_hp) {

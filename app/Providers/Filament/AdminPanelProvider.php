@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->favicon(asset('logo.webp'))
             ->darkMode(false)
             ->profile()
             ->colors([
@@ -44,11 +45,11 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            // ->widgets([
-            //     // Widgets\AccountWidget::class,
-            //     // Widgets\FilamentInfoWidget::class,
-            //     StatsOverviewWidget::class
-            // ])
+            ->widgets([
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\StatsOverviewWidget::class
+            ])
             ->renderHook(
                 'panels::head.end',
                 fn(): string => Blade::render('
@@ -64,10 +65,10 @@ class AdminPanelProvider extends PanelProvider
                 '),
             )
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            // ->widgets([
+            //     AccountWidget::class,
+            //     FilamentInfoWidget::class,
+            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

@@ -114,6 +114,17 @@
             font-weight: bold;
         }
 
+        .logo-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+            width: 300px;
+            height: auto;
+        }
+
         .notes {
             margin-top: 20px;
             font-size: 9px;
@@ -133,13 +144,22 @@
 
 <body>
     <div class="container">
-        <div class="watermark">MA COKROAMINOTO KARANGKOBAR</div>
+        <!-- Logo Watermark -->
+        @if (isset($logoPath) && file_exists($logoPath))
+            <img src="data:image/webp;base64,{{ base64_encode(file_get_contents($logoPath)) }}" alt="Logo"
+                class="logo-watermark">
+        @else
+            <img src="{{ asset('logo.webp') }}" alt="Logo" class="logo-watermark">
+        @endif
+
+        <!-- Text Watermark (Optional) -->
+        {{-- <div class="watermark">COKROAMINOTO KARANGKOBAR</div> --}}
 
         <div class="header">
-            <h1>MA COKROAMINOTO KARANGKOBAR</h1>
+            <h1>MADRASAH ALIYAH COKROAMINOTO KARANGKOBAR</h1>
             <h2>KUITANSI PEMBAYARAN SPP</h2>
-            <p>Alamat: Jl. Raya Karangkobar No. 123, Karangkobar, Banjarnegara</p>
-            <p>Telp: (0286) 123456 | Email: info@macokroaminoto.sch.id</p>
+            <p>Alamat: Karangkobar Kidul, Karangkobar, Kec. Karangkobar, Kab. Banjarnegara, Jawa Tengah 53453</p>
+            <p>Telp: (0286) 5988341</p>
         </div>
 
         <div class="kuitansi-info">
@@ -211,7 +231,7 @@
         <div class="footer">
             <div class="signature">
                 <div>Petugas Keuangan</div>
-                <div class="signature-line">(.............................)</div>
+                <div class="signature-line">(....................................)</div>
             </div>
         </div>
 
