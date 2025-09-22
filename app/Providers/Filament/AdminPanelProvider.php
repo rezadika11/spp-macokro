@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->favicon(asset('logo.webp'))
             ->darkMode(false)
+            ->brandName('SPP MACKROBARA')
             ->profile()
             ->colors([
                 'primary' => Color::Emerald,

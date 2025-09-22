@@ -14,3 +14,33 @@
     margin: 0.25rem 0.75rem !important;
     transition: background-color 0.2s ease-in-out !important;
 }
+
+/* Navbar/Topbar styling - keep emerald */
+.fi-topbar {
+    background-color: #10b981 !important; /* Emerald 500 */
+    border-bottom: 1px solid #059669 !important; /* Emerald 600 border */
+}
+
+.dark .fi-topbar {
+    background-color: #047857 !important; /* Emerald 700 for dark mode */
+    border-bottom: 1px solid #065f46 !important; /* Emerald 800 border */
+}
+
+/* Text color adjustments - only for topbar now */
+.fi-topbar .fi-topbar-item,
+.fi-topbar .fi-topbar-item *,
+.fi-topbar h1,
+.fi-topbar .fi-header-heading,
+.fi-topbar .fi-breadcrumbs,
+.fi-topbar .fi-breadcrumbs *,
+.fi-topbar nav,
+.fi-topbar nav *,
+.fi-topbar .fi-topbar-item-label,
+.fi-topbar .fi-topbar-open-sidebar-btn,
+.fi-topbar .fi-topbar-open-sidebar-btn svg,
+.fi-topbar .fi-icon-btn,
+.fi-topbar .fi-icon-btn svg,
+.fi-topbar .fi-logo {
+    color: white !important;
+    stroke: white !important;
+}
