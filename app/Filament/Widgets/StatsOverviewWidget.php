@@ -6,46 +6,60 @@ use App\Models\Siswa;
 use App\Models\Pembayaran;
 use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\Auth;
 
 class StatsOverviewWidget extends BaseStatsOverviewWidget
 {
+    /**
+     * Check if widget can be displayed based on user role
+     */
+    public static function canView(): bool
+    {
+        $user = Auth::user();
+        return $user && ($user->isKeuangan() || $user->isKepsek());
+    }
+
     protected function getStats(): array
     {
+        $user = Auth::user();
+
         // Hitung total siswa
         $totalSiswa = Siswa::count();
-        
+
         // Hitung pembayaran lunas (status = 'lunas')
         $pembayaranLunas = Pembayaran::where('status', 'lunas')->count();
-        
+
         // Hitung pembayaran belum bayar untuk bulan sekarang
         $bulanSekarang = now()->format('Y-m'); // Format: 2025-01
         $pembayaranBelumBayar = Pembayaran::where('status', 'belum_bayar')
             ->where('bulan', $bulanSekarang)
             ->count();
-        
+
         // Hitung total pendapatan dari pembayaran lunas
         $totalPendapatan = Pembayaran::where('status', 'lunas')->sum('jumlah');
 
-        return [
+        $stats = [
             Stat::make('Total Siswa', $totalSiswa)
                 ->description('Jumlah siswa terdaftar')
                 ->descriptionIcon('heroicon-m-users')
                 ->color('primary'),
-                
+
             Stat::make('Pembayaran Lunas', $pembayaranLunas)
                 ->description('SPP yang sudah dibayar')
                 ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
-                
+
             Stat::make('Belum Bayar Bulan Ini', $pembayaranBelumBayar)
                 ->description('SPP ' . now()->format('F Y') . ' yang belum dibayar')
                 ->descriptionIcon('heroicon-m-exclamation-circle')
                 ->color('danger'),
-                
-            Stat::make('Total Pendapatan', 'Rp ' . number_format($totalPendapatan, 0, ',', '.'))
-                ->description('Dari pembayaran lunas')
-                ->descriptionIcon('heroicon-m-banknotes')
-                ->color('success'),
         ];
+
+        $stats[] = Stat::make('Total Pendapatan', 'Rp ' . number_format($totalPendapatan, 0, ',', '.'))
+            ->description('Dari pembayaran lunas')
+            ->descriptionIcon('heroicon-m-banknotes')
+            ->color('success');
+
+        return $stats;
     }
 }

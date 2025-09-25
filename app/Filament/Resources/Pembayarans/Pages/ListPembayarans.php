@@ -8,6 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 class ListPembayarans extends ListRecords
 {
@@ -15,8 +16,12 @@ class ListPembayarans extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('generate_tagihan_otomatis')
+        $user = Auth::user();
+        $actions = [];
+
+        // Button Generate Tagihan Otomatis hanya untuk role keuangan
+        if ($user && $user->isKeuangan()) {
+            $actions[] = Action::make('generate_tagihan_otomatis')
                 ->label('Generate Tagihan Otomatis')
                 ->icon('heroicon-o-bolt')
                 ->color('info')
@@ -42,8 +47,9 @@ class ListPembayarans extends ListRecords
                             ->danger()
                             ->send();
                     }
-                }),
-            // CreateAction::make(),
-        ];
+                });
+        }
+
+        return $actions;
     }
 }

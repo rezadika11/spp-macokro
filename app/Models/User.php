@@ -15,6 +15,10 @@ class User extends Authenticatable implements FilamentUser
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    // Role constants
+    const ROLE_KEUANGAN = 'keuangan';
+    const ROLE_KEPSEK = 'kepsek';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +28,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -51,6 +56,22 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return in_array($this->role, [self::ROLE_KEUANGAN, self::ROLE_KEPSEK]);
+    }
+
+    /**
+     * Check if user is keuangan
+     */
+    public function isKeuangan(): bool
+    {
+        return $this->role === self::ROLE_KEUANGAN;
+    }
+
+    /**
+     * Check if user is kepsek
+     */
+    public function isKepsek(): bool
+    {
+        return $this->role === self::ROLE_KEPSEK;
     }
 }

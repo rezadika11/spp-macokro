@@ -8,11 +8,13 @@ use App\Filament\Resources\Siswas\Pages\ListSiswas;
 use App\Filament\Resources\Siswas\Schemas\SiswaForm;
 use App\Filament\Resources\Siswas\Tables\SiswasTable;
 use App\Models\Siswa;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaResource extends Resource
 {
@@ -46,10 +48,54 @@ class SiswaResource extends Resource
 
     public static function getPages(): array
     {
+        $user = Auth::user();
+        
+        // Kepsek tidak bisa mengakses Siswa
+        if ($user && $user->isKepsek()) {
+            return [];
+        }
+        
+        // Keuangan memiliki akses penuh
         return [
             'index' => ListSiswas::route('/'),
             'create' => CreateSiswa::route('/create'),
             'edit' => EditSiswa::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Check if user can access this resource
+     */
+    public static function canAccess(): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isKeuangan();
+    }
+
+    /**
+     * Check if user can create records
+     */
+    public static function canCreate(): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isKeuangan();
+    }
+
+    /**
+     * Check if user can edit records
+     */
+    public static function canEdit($record): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isKeuangan();
+    }
+
+    /**
+     * Check if user can delete records
+     */
+    public static function canDelete($record): bool
+    {
+        $user = Auth::user();
+        return $user && $user->isKeuangan();
     }
 }

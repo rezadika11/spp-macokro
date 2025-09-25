@@ -13,10 +13,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create Keuangan user
+        User::create([
+            'email' => 'keuangan@gmail.com',
+            'name' => 'Staff Keuangan',
+            'password' => bcrypt('keuangan123'),
+            'role' => User::ROLE_KEUANGAN
+        ]);
+
+        // Create Kepsek user
+        User::create([
+            'email' => 'kepsek@gmail.com',
+            'name' => 'Kepala Sekolah',
+            'password' => bcrypt('kepsek123'),
+            'role' => User::ROLE_KEPSEK
+        ]);
+
+        // Update existing admin user to keuangan role
         User::create([
             'email' => 'admin@gmail.com',
-            'name' => 'admin',
-            'password' => bcrypt('admin123')
+            'name' => 'Admin',
+            'password' => bcrypt('admin123'),
+            'role' => User::ROLE_KEUANGAN
         ]);
     }
 }

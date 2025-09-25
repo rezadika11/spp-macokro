@@ -14,6 +14,7 @@ use Filament\Support\Icons\Heroicon;
 use App\Services\FontteService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaransTable
 {
@@ -93,7 +94,7 @@ class PembayaransTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->visible(fn($record) => $record->status !== 'lunas'),
+                    ->visible(fn($record) => $record->status !== 'lunas' && Auth::user() && Auth::user()->isKeuangan()),
                 Action::make('kirim_tagihan')
                     ->label('Kirim Tagihan')
                     ->icon(Heroicon::OutlinedPaperAirplane)
@@ -106,7 +107,7 @@ class PembayaransTable
                         return 'https://wa.me/' . $record->siswa->no_hp . '?text=' . urlencode($pesan);
                     })
                     ->openUrlInNewTab()
-                    ->visible(fn($record) => $record->status === 'belum_bayar' && $record->siswa->no_hp),
+                    ->visible(fn($record) => $record->status === 'belum_bayar' && $record->siswa->no_hp && Auth::user() && Auth::user()->isKeuangan()),
 
                 Action::make('kirim_notifikasi_lunas')
                     ->label('Kirim Notif Lunas')
@@ -121,7 +122,7 @@ class PembayaransTable
                         return 'https://wa.me/' . $record->siswa->no_hp . '?text=' . urlencode($pesan);
                     })
                     ->openUrlInNewTab()
-                    ->visible(fn($record) => $record->status === 'lunas' && $record->siswa->no_hp),
+                    ->visible(fn($record) => $record->status === 'lunas' && $record->siswa->no_hp && Auth::user() && Auth::user()->isKeuangan()),
 
                 Action::make('cetak_kuitansi')
                     ->label('Cetak Kuitansi')
@@ -129,11 +130,12 @@ class PembayaransTable
                     ->color('success')
                     ->url(fn($record) => route('kuitansi.cetak', $record->id))
                     ->openUrlInNewTab()
-                    ->visible(fn($record) => $record->status === 'lunas'),
+                    ->visible(fn($record) => $record->status === 'lunas' && Auth::user() && Auth::user()->isKeuangan()),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->visible(fn() => Auth::user() && Auth::user()->isKeuangan()),
                 ]),
             ]);
     }
