@@ -48,14 +48,14 @@ class PembayaranResource extends Resource
     public static function getPages(): array
     {
         $user = Auth::user();
-        
+
         // Kepsek hanya bisa melihat list, tidak bisa create/edit
         if ($user && $user->isKepsek()) {
             return [
                 'index' => ListPembayarans::route('/'),
             ];
         }
-        
+
         // Keuangan memiliki akses penuh
         return [
             'index' => ListPembayarans::route('/'),

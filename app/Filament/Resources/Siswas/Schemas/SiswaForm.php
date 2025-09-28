@@ -22,6 +22,7 @@ class SiswaForm
                         TextInput::make('nis')
                             ->label('NIS')
                             ->placeholder('Nomor Induk Siswa')
+                            ->type('number')
                             ->rules(function (Component $component) {
                                 $recordId = $component->getLivewire()->record->id ?? null;
                                 return [

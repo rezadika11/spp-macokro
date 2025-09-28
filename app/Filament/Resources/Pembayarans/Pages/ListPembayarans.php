@@ -3,8 +3,11 @@
 namespace App\Filament\Resources\Pembayarans\Pages;
 
 use App\Filament\Resources\Pembayarans\PembayaranResource;
+use App\Models\TahunAkademik;
+use App\Models\Kelas;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Artisan;
@@ -18,6 +21,61 @@ class ListPembayarans extends ListRecords
     {
         $user = Auth::user();
         $actions = [];
+
+        // Button Cetak Laporan PDF untuk role keuangan dan kepsek
+        if ($user && ($user->isKeuangan() || $user->isKepsek())) {
+            $actions[] = Action::make('cetak_laporan')
+                ->label('Cetak Laporan PDF')
+                ->icon('heroicon-o-document-text')
+                ->color('success')
+                ->form([
+                    Select::make('tahun_akademik_id')
+                        ->label('Tahun Akademik')
+                        ->options(TahunAkademik::all()->pluck('nama', 'id'))
+                        ->default(TahunAkademik::where('aktif', true)->first()?->id)
+                        ->required(),
+                    
+                    Select::make('bulan')
+                        ->label('Bulan')
+                        ->options([
+                            'semua' => 'Semua Bulan',
+                            'Januari' => 'Januari',
+                            'Februari' => 'Februari',
+                            'Maret' => 'Maret',
+                            'April' => 'April',
+                            'Mei' => 'Mei',
+                            'Juni' => 'Juni',
+                            'Juli' => 'Juli',
+                            'Agustus' => 'Agustus',
+                            'September' => 'September',
+                            'Oktober' => 'Oktober',
+                            'November' => 'November',
+                            'Desember' => 'Desember',
+                        ])
+                        ->default('semua')
+                        ->required(),
+                    
+                    Select::make('kelas_id')
+                        ->label('Kelas')
+                        ->options(['semua' => 'Semua Kelas'] + Kelas::all()->pluck('nama', 'id')->toArray())
+                        ->default('semua')
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    // Buat URL untuk laporan
+                    $url = route('laporan.pembayaran.cetak', [
+                        'tahun_akademik_id' => $data['tahun_akademik_id'],
+                        'bulan' => $data['bulan'],
+                        'kelas_id' => $data['kelas_id'],
+                    ]);
+                    
+                    // Buka URL di tab baru menggunakan JavaScript
+                    $this->js("window.open('$url', '_blank')");
+                })
+                ->modalHeading('Filter Laporan Pembayaran')
+                ->modalSubmitActionLabel('Cetak PDF')
+                ->modalWidth('md');
+        }
 
         // Button Generate Tagihan Otomatis hanya untuk role keuangan
         if ($user && $user->isKeuangan()) {

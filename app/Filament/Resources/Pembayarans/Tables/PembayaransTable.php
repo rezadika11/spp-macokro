@@ -15,6 +15,7 @@ use App\Services\FontteService;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Kelas;
 
 class PembayaransTable
 {
@@ -91,6 +92,10 @@ class PembayaransTable
                         'November' => 'November',
                         'Desember' => 'Desember',
                     ]),
+                SelectFilter::make('siswa.kelas_id')
+                    ->label('Kelas')
+                    ->relationship('siswa.kelas', 'nama')
+                    ->options(Kelas::all()->pluck('nama', 'id'))
             ])
             ->recordActions([
                 EditAction::make()
