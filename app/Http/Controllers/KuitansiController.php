@@ -29,13 +29,13 @@ class KuitansiController extends Controller
 
         // Definisikan tanggal cetak sebelum membuat PDF
         $tanggal_cetak = now()->format('d/m/Y H:i');
-        
+
         // Generate terbilang untuk jumlah pembayaran
         $terbilang = $this->terbilang($pembayaran->jumlah);
-        
+
         // Path logo untuk PDF
         $logoPath = public_path('logo.webp');
-        
+
         // Nama user yang sedang login untuk signature
         $petugas = auth()->user()->name ?? 'Petugas Keuangan';
 
@@ -96,7 +96,7 @@ class KuitansiController extends Controller
     {
         try {
             $fontteService = new FontteService();
-            
+
             // Format nomor HP (pastikan format 628xxx)
             $noHp = $pembayaran->siswa->no_hp;
             if (substr($noHp, 0, 1) === '0') {
@@ -108,18 +108,18 @@ class KuitansiController extends Controller
             // Simpan PDF sementara untuk upload
             $fileName = "Kuitansi-{$pembayaran->nomor_kuitansi}.pdf";
             $filePath = storage_path("app/temp/{$fileName}");
-            
+
             // Pastikan direktori temp ada
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true);
             }
-            
+
             // Simpan PDF ke file sementara
             file_put_contents($filePath, $pdf->output());
-            
+
             // Generate URL file yang bisa diakses
             $fileUrl = url("storage/temp/{$fileName}");
-            
+
             // Copy file ke public storage
             $publicPath = public_path("storage/temp/{$fileName}");
             if (!file_exists(dirname($publicPath))) {
@@ -154,7 +154,7 @@ class KuitansiController extends Controller
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
-            
+
             // Hapus file public setelah beberapa waktu (opsional)
             // Bisa dijadwalkan dengan job queue untuk cleanup
 

@@ -213,7 +213,7 @@
             </tr>
             <tr>
                 <th>Kelas</th>
-                <td>{{ $pembayaran->siswa->kelas }}</td>
+                <td>{{ $pembayaran->siswa->kelas->nama }}</td>
             </tr>
             <tr>
                 <th>Bulan Pembayaran</th>
